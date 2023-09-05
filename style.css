@@ -1,0 +1,221 @@
+/* style.css */
+
+body {
+    /*background-image: url('fondo.png');*/
+    background-color: #343a40;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+header {
+    background-color:  #343a40;
+    padding: 20px 0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 48px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+h3 {
+    font-size: 24px; /* Tamaño de la letra */
+    font-family: 'Poppins', sans-serif; 
+    color: #d1eab7; 
+    text-align: left; 
+}
+label {
+    margin-right: 10px; 
+    margin-left: 10px;
+}
+/* Estilos para el menú de navegación */
+nav {
+    /* background-color: #9CD652; /* Color de fondo del menú */
+    color: rgb(254, 250, 250); 
+    text-align: right; 
+}
+
+nav ul {
+    list-style: none; 
+    padding: 0; 
+}
+
+nav ul li {
+    display: inline; 
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+    color: white;
+    font-weight: bold; 
+    font-size: 14px; 
+}
+/* Main parte1 */
+
+#md1 {
+    background-color: white;
+}
+
+
+
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+.card {
+    background-color: #333;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    width: 250px;
+    text-align: left;
+}
+
+/* Estilo para centrar los botones de navegación */
+.pagination {
+    text-align: center;
+}
+.alive {
+    color: white;
+    background-color:#698F3F; /* Agrega esta línea para el fondo rojo */
+    margin-left: 2px;
+    padding-left: 10px;
+    margin-right: 30px;
+    
+    
+}
+
+.dead {
+    color: white;
+    background-color: #C14542 ; /* Agrega esta línea para el fondo rojo */
+    margin-left: 2px;
+    padding-left: 10px;
+    margin-right: 30px;
+    
+    
+}
+
+.unknown {
+    color: white;
+    background-color: #00468C; /* Agrega esta línea para el fondo rojo */
+    margin-left: 2px;
+    padding-left: 10px;
+    margin-right: 30px;
+    
+}
+
+.male {
+    align-items: center;
+    color:white;
+}
+
+.male::before {
+    content: "\2022"; /* Carácter especial para un punto (círculo) */
+    color: #bd6910;
+    margin-right: 5px;
+    font-size: 10px; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 50%; 
+    background-color:#bd6910; 
+    width: 10px; 
+    height: 10px; 
+    text-align: center; 
+}
+.female {
+    align-items: center;
+    color:white;
+}
+.female::before {
+    content: "\2022"; /* Carácter especial para un punto (círculo) */
+    color: #bd1083;
+    margin-right:5px;
+    font-size: 10px; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; /* Centrar horizontalmente dentro del círculo */
+    border-radius: 50%;
+    background-color:#bd106f; 
+    width: 10px; 
+    height: 10px; 
+    text-align: center; 
+}
+.img {
+    width: 90%;
+}
+
+/* Estilos para filtros */
+.filters {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+.filters select {
+    font-size: 14px;
+    padding: 10px;
+    color: #6d6f87;
+    margin-bottom: 10px;
+}
+
+/* Estilos para paginación */
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pagination button {
+    font-size: 18px;
+    padding: 5px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color:#698F3F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.pagination button:hover {
+    background-color: #555;
+}
+
+button {
+    font-size: 18px;
+    padding: 5px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-color:#698F3F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Estilos para el banner */
+.banner {
+    width: 100%;
+}
+
+/* Estilo para cambiar el color del texto al hacer hover */
+.hover-color:hover {
+    color: rgb(195, 115, 23); /* Cambia "red" al color que desees */
+    cursor: pointer; /* Cambia el cursor al estilo "pointer" para indicar que es interactivo */
+  }
+

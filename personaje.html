@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>Proyecto Rick and Morty API</title>
+</head>
+<body>
+    <!-- Banner -->
+    <div class="md1">
+        <img src="banner1.png" alt="Banner de Rick and Morty" class="banner">
+    </div>
+
+    <!-- Encabezado -->
+    <header>
+        <h1>Proyecto de Rick and Morty API</h1>
+        
+            <nav>
+                <ul>
+                    <li><a href="personaje.html">Personajes</a></li>
+                    <li><a href="prueba.html">Especies</a></li>
+                    <li><a href="index.html">Incio</a></li>
+                </ul>
+            </nav>
+        
+    </header>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <label for="personaje">Filtrar por personaje:</label>
+        <select id="personajeFilter">
+            <option value="">Todos</option>
+            <option value="Rick">Rick Sanchez</option>
+            <option value="Morty">Morty Smith</option>
+            <option value="Summer">Summer Smith</option>
+            <option value="Beth">Beth Smith</option>
+            <option value="Jerry">Jerry Smith</option>
+        </select>
+    </div>
+
+    <!-- Contenedor de Personajes -->
+    <div id="container"></div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <button id="prevPage" disabled>Anterior</button>
+        <button id="nextPage" disabled>Siguiente</button>
+    </div>
+
+    <script>
+        const API = 'https://rickandmortyapi.com/api/character';
+        const container = document.getElementById('container');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const personajeFilter = document.getElementById('personajeFilter');
+
+        let currentPage = 1;
+        let selectedPersonaje = '';
+
+        async function fetchCharacters(page, personaje) {
+            try {
+                let url = `${API}/?page=${page}&name=${personaje}`;
+                let response = await fetch(url);
+                let data = await response.json();
+                showCharacters(data.results);
+                updatePagination(data.info);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function showCharacters(characters) {
+            container.innerHTML = '';
+            characters.forEach(personaje => {
+                let cardPersonaje = document.createElement("div");
+                cardPersonaje.classList.add('card');
+                cardPersonaje.innerHTML = `
+                    <h3>${personaje.name}</h3>
+                    <p class="${personaje.status.toLowerCase()}">${personaje.status}</p>
+                    <p>Especie: ${personaje.species}</p>
+                    <p>Ubicación: ${personaje.location.name}</p>
+                    <img class="img" src="${personaje.image}">
+                `;
+                container.appendChild(cardPersonaje);
+            });
+        }
+
+        function updatePagination(info) {
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === info.pages;
+        }
+
+        personajeFilter.addEventListener('change', () => {
+            selectedPersonaje = personajeFilter.value;
+            currentPage = 1; // Reiniciar la página actual al cambiar el filtro
+            fetchCharacters(currentPage, selectedPersonaje);
+        });
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchCharacters(currentPage, selectedPersonaje);
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            currentPage++;
+            fetchCharacters(currentPage, selectedPersonaje);
+        });
+
+        // Cargar la lista de personajes al cargar la página
+        fetchCharacters(currentPage, selectedPersonaje);
+    </script>
+</body>
+</html>
+
+
+
+

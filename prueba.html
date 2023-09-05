@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>Proyecto Rick and Morty API</title>
+</head>
+<body>
+    <!-- Banner -->
+    <div class="md1">
+        <img src="banner1.png" alt="Banner de Rick and Morty" class="banner">
+    </div>
+
+    <!-- Encabezado -->
+    <header>
+        <h1>Proyecto de Rick and Morty API</h1>
+        <nav>
+            <ul>
+                <li><a href="personaje.html">Personajes</a></li>
+                <li><a href="prueba.html">Especies</a></li>
+                <li><a href="index.html">Incio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <label for="speciesFilter">Filtrar por especie:</label>
+        <select id="speciesFilter">
+            <option value="">Todos</option>
+            <option value="Human">Humano</option>
+            <option value="Alien">Alien</option>
+            <option value="Humanoid">Humanoid</option>
+            <option value=" Disease"> Disease</option>
+        </select>
+    </div>
+
+    <!-- Contenedor de Personajes -->
+    <div id="container"></div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <button id="prevPage" disabled>Anterior</button>
+        <button id="nextPage" disabled>Siguiente</button>
+    </div>
+
+    <script>
+        const API = 'https://rickandmortyapi.com/api/character';
+        const container = document.getElementById('container');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const speciesFilter = document.getElementById('speciesFilter');
+
+        let currentPage = 1;
+        let selectedSpecies = ''; // Cambiar a selectedSpecies
+
+        async function fetchCharacters(page, species) {
+            try {
+                let url = `${API}/?page=${page}&species=${species}`; // Cambiar 'name' a 'species'
+                let response = await fetch(url);
+                let data = await response.json();
+                showCharacters(data.results);
+                updatePagination(data.info);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function showCharacters(characters) {
+            container.innerHTML = '';
+            characters.forEach(personaje => {
+                let cardPersonaje = document.createElement("div");
+                cardPersonaje.classList.add('card');
+                cardPersonaje.innerHTML = `
+                    <h3>${personaje.name}</h3>
+                    <p class="${personaje.status.toLowerCase()}">${personaje.status}</p>
+                    <p>Especie: ${personaje.species}</p>
+                    <p>Ubicación: ${personaje.location.name}</p>
+                    <img class="img" src="${personaje.image}">
+                `;
+                container.appendChild(cardPersonaje);
+            });
+        }
+
+        function updatePagination(info) {
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === info.pages;
+        }
+
+        speciesFilter.addEventListener('change', () => {
+            selectedSpecies = speciesFilter.value; // Cambiar a selectedSpecies
+            currentPage = 1;
+            fetchCharacters(currentPage, selectedSpecies);
+        });
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchCharacters(currentPage, selectedSpecies);
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            currentPage++;
+            fetchCharacters(currentPage, selectedSpecies);
+        });
+
+        // Cargar la lista de personajes al cargar la página
+        fetchCharacters(currentPage, selectedSpecies);
+
+        // Habilitar o deshabilitar botones de paginación al cargar la página
+        window.addEventListener('load', () => {
+            prevPageBtn.disabled = currentPage === 1;
+        });
+    </script>
+</body>
+</html>

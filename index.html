@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>Proyecto Rick and Morty API</title>
+</head>
+<body>
+    <!-- Banner -->
+    <div class="md1">
+        <img src="banner1.png" alt="Banner de Rick and Morty" class="banner">
+    </div>
+   
+    <!-- Encabezado -->
+    <header>
+        <h1>Proyecto de Rick and Morty API</h1>
+        <nav>
+            <ul>
+                <li><a href="personaje.html">Personajes</a></li>
+                <li><a href="prueba.html">Especies</a></li>
+                <li><a href="index.html">Incio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Filtros -->
+    <div class="filters">
+        <label for="generoFilter">Filtrar por género:</label>
+        <select id="generoFilter">
+            <option value="">Todos</option>
+            <option value="male">Masculino</option>
+            <option value="female">Femenino</option>
+            <option value="genderless">Sin género</option>
+        </select>
+        <label for="statusFilter">Filtrar por estado:</label>
+        <select id="statusFilter">
+            <option value="">Todos</option>
+            <option value="Alive">Vivo</option>
+            <option value="Dead">Muerto</option>
+            <option value="unknown">Desconocido</option>
+        </select>
+        <label for="speciesFilter">Filtrar por especie:</label>
+        <select id="speciesFilter" multiple>
+            <option value="Human">Humano</option>
+            <option value="Alien">Alien</option>
+            <option value="Humanoid">Humanoid</option>
+        </select>
+        <button id="prevPage" disabled>Anterior</button>
+        <button id="nextPage" disabled>Siguiente</button>
+        <p></p>
+        <hr>
+    </div>
+
+    <!-- Contenedor de personajes -->
+    <div id="container"></div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <button id="prevPage" disabled>Anterior</button>
+        <button id="nextPage" disabled>Siguiente</button>
+    </div>
+
+    <!-- Agrega aquí el código HTML de los personajes -->
+
+    <script>
+        const API = 'https://rickandmortyapi.com/api/character';
+        const statusFilter = document.getElementById('statusFilter');
+        const generoFilter = document.getElementById('generoFilter');
+        const speciesFilter = document.getElementById('speciesFilter');
+        const container = document.getElementById('container');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        let currentPage = 1;
+
+        async function fetchCharacters(page) {
+            try {
+                let url = `${API}/?page=${page}`;
+
+                // Agregar filtros si están seleccionados
+                const selectedStatus = statusFilter.value ? `&status=${statusFilter.value}` : '';
+                const selectedGenero = generoFilter.value ? `&gender=${generoFilter.value}` : '';
+                const selectedSpecies = Array.from(speciesFilter.selectedOptions).map(option => `&species=${option.value}`).join('');
+
+                // Combinar los filtros en la URL
+                url += `${selectedStatus}${selectedGenero}${selectedSpecies}`;
+
+                let response = await fetch(url);
+                let data = await response.json();
+                showCharacters(data.results);
+                updatePagination(data.info);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function showCharacters(characters) {
+            container.innerHTML = '';
+            characters.forEach(personaje => {
+                let cardPersonaje = document.createElement("div");
+                cardPersonaje.classList.add('card');
+                cardPersonaje.innerHTML = `
+                    <h3 class="hover-color">${personaje.name}</h3>
+                    <p class="${personaje.status.toLowerCase()}">${personaje.status}</p>
+                    <img class="img" src="${personaje.image}" title="${personaje.name} - ${personaje.species}">
+                    <p>Género: <span class="${personaje.gender.toLowerCase()}">${personaje.gender}</span></p>
+                    <p>Especie: ${personaje.species}</p>
+                    <p>${personaje.type}</p>
+                    <p>Ubicación: ${personaje.location.name}</p>
+                `;
+                container.appendChild(cardPersonaje);
+            });
+        }
+
+        function updatePagination(info) {
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === info.pages;
+        }
+
+        statusFilter.addEventListener('change', () => {
+            currentPage = 1;
+            fetchCharacters(currentPage);
+        });
+
+        generoFilter.addEventListener('change', () => {
+            currentPage = 1;
+            fetchCharacters(currentPage);
+        });
+
+        speciesFilter.addEventListener('change', () => {
+            currentPage = 1;
+            fetchCharacters(currentPage);
+        });
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchCharacters(currentPage);
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            currentPage++;
+            fetchCharacters(currentPage);
+        });
+
+        // Cargar la lista de personajes al cargar la página
+        fetchCharacters(currentPage);
+    </script>
+</body>
+</html>
